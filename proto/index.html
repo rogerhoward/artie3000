@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas</title>
+  </head>
+  <body>
+
+	<canvas width="800" height="800" class="myCanvas">
+		<p>Your browser doesn't support canvas. Boo hoo!</p>
+	</canvas>
+
+
+    <script>
+		spiral = function(ctx,obj) {
+		  var center, eAngle, increment, newX, newY, progress, sAngle, tempTheta, theta;
+		  sAngle = Math.PI + obj.angle;
+		  eAngle = sAngle + Math.PI * 2 * obj.number;
+		  center = {
+		    x: obj.start.x + Math.cos(obj.angle) * obj.radius,
+		    y: obj.start.y + Math.sin(obj.angle) * obj.radius
+		  };
+		  increment = 2 * Math.PI / obj.sides/*steps per rotation*/;
+		  console.log(increment);
+		  theta = sAngle;
+		  ctx.beginPath();
+		  ctx.moveTo(center.x, center.y);
+		  while (theta <= eAngle + increment) {
+		    progress = (theta - sAngle) / (eAngle - sAngle);
+		    tempTheta = obj.direction ? theta : -1 * (theta - 2 * obj.angle);
+		    console.log(obj.angle);
+		    newX = obj.radius * Math.cos(tempTheta) * progress;
+		    newY = obj.radius * Math.sin(tempTheta) * progress;
+		    theta += increment;
+		    ctx.lineTo(center.x + newX, center.y + newY);
+		  }
+		  ctx.stroke();
+		};
+
+		var canvas = document.querySelector('.myCanvas');
+		var width = canvas.width;
+		var height = canvas.height;
+		console.log(width, height);
+		var ctx = canvas.getContext('2d');
+		console.log(ctx);
+
+		spiral(ctx, {
+		  start: {//starting point of spiral
+		    x: 0, 
+		    y: 100
+		  },
+		  sides: 20,
+		  angle: 30 * (Math.PI / 180), //angle from starting point
+		  direction: false,
+		  radius: 100, //radius from starting point in direction of angle
+		  number: 10 // number of circles
+		});
+
+    </script>
+
+  </body>
+</html>
